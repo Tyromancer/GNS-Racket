@@ -160,7 +160,10 @@
 ;; Example: (lis_fast `(1 2 3 4 1)) should produce (1 2 3 4)
 ;; Definition
 (define (lis_fast lst)
-	; TODO
+	(compute_group
+		`()
+		lst
+	)
 )
 
 (define(compute_group group L)
