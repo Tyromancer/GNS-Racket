@@ -185,24 +185,3 @@
             ;the second element of append, the remaining L which is the result of recursion
    )
   )
-
-(define (max_j seq)
-        (if (equal? (cdr seq) '())
-            (car (cdr (car seq)))
-            (max (car (cdr (car seq))) (max_j (cdr seq)))
-        )
-)
-
-(define (crop_lst lst j)
-        (if (equal? (car (cdr (car lst))) j)
-            lst
-            (crop_lst (cdr lst) j)
-        )
-)
-
-(define (get_sublst lst j sublst last_j)
-        (if (equal? (length sublst) last_j)
-            (reverse sublst)
-            (get_sublst (cdr (crop_lst lst j)) (+ j 1) (cons (car (car (crop_lst lst j))) sublst) last_j)
-        )
-)
