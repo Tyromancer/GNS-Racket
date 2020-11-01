@@ -212,6 +212,7 @@
    )
   )
 
+
 (define (max_j seq)
         (if (equal? (cdr seq) '())
             (car (cdr (car seq)))
@@ -222,13 +223,32 @@
 (define (crop_lst lst j)
         (if (equal? (car (cdr (car lst))) j)
             lst
-            (crop_lst (cdr lst) j)
+            (if (equal? (cdr lst) '())
+                '()
+                (crop_lst (cdr lst) j)
+            )
         )
 )
 
 (define (get_sublst lst j sublst last_j)
         (if (equal? (length sublst) last_j)
             (reverse sublst)
-            (get_sublst (cdr (crop_lst lst j)) (+ j 1) (cons (car (car (crop_lst lst j))) sublst) last_j)
-        )
+            (let ((x (crop_lst lst j)))
+                  (cond ((equal? x '()) '())
+                        ((equal? j 1) (get_sublst x (+ j 1) (cons (car (car x)) sublst) last_j))
+                        (else
+                            (cond ((< (car (car x)) (car sublst)) (get_sublst (cdr x) j sublst last_j))
+                                  (else
+                                      (let ((y (get_sublst (cdr x) (+ j 1) (cons (car (car x)) sublst) last_j)))
+                                            (cond ((equal? y '()) (get_sublst (cdr x) j sublst last_j))
+                                                  (else y
+                                                  )
+                                            )
+                                      )
+                                  )
+                            )
+                        )
+                  )
+             )
+         )
 )
