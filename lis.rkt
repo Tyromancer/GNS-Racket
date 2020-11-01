@@ -182,17 +182,20 @@
 ;; Example: (lis_fast `(1 2 3 4 1)) should produce (1 2 3 4)
 ;; Definition
 (define (lis_fast lst)
-	(let* ( (l (compute_group `() lst) ) (max_l (max_j l) ) )
-		(get_sublst
-			l
-			1
-			`()
-			max_l
+	(if (null? lst)
+		`()
+		(let* ( (l (compute_group `() lst) ) (max_l (max_j l) ) )
+			(get_sublst
+				l
+				1
+				`()
+				max_l
+			)
 		)
 	)
 )
 
-(define(compute_group group L)
+(define (compute_group group L)
   (if (= (length L) 1)
    (list (list
           (car L)
