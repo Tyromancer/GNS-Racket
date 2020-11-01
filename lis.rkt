@@ -9,7 +9,7 @@
 		; if not null, compare head of lst
 		(if 
 			(and 
-				(> curr (caar lst))
+				(>= curr (caar lst))
 				(< longest (+ (cadar lst) 1) )
 			)
 
@@ -162,3 +162,23 @@
 (define (lis_fast lst)
 	; TODO
 )
+
+(define(compute_group group L)
+  (if (= (length L) 1)
+   (list (list
+          (car L)
+          (compute_longest group (car L) 1)))
+   ; base case, return the last desired pair of the list
+   (append (list (list
+                  (car L)
+                  (compute_longest group (car L) 1)))
+           ;the first element of append, the pair of the current element and the corresponding L(k)
+           (compute_group
+            (append group
+                    (list (list
+                           (car L)
+                           (compute_longest group (car L) 1))))
+            (cdr L)))
+            ;the second element of append, the remaining L which is the result of recursion
+   )
+  )
