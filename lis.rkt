@@ -1,3 +1,34 @@
+;; lst --> ( (num longest), ... )
+;; curr --> current number in input list
+;; longest --> curr's longest val
+(define (compute_longest lst curr longest )
+	(if (null? lst)
+		; if lst is null, return input longest value
+		longest
+
+		; if not null, compare head of lst
+		(if 
+			(and 
+				(> curr (caar lst))
+				(< longest (+ (cadar lst) 1) )
+			)
+
+			(compute_longest
+				(cdr lst)
+				curr
+				(+ longest 1)
+			)
+
+			(compute_longest
+				(cdr lst)
+				curr
+				longest
+			)
+		)
+	)
+)
+
+
 (define (generate_sublists lst len)
 	(cond
 
@@ -99,6 +130,7 @@
 		)
 	)
 )
+
 
 (define (slow lst len)
 	(if (<= (length lst) 0)
