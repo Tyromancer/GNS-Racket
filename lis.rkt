@@ -224,12 +224,15 @@
 )
 
 (define (crop_lst lst j)
-        (if (equal? (car (cdr (car lst))) j)
-            lst
-            (if (equal? (cdr lst) '())
-                '()
-                (crop_lst (cdr lst) j)
-            )
+	    (if (equal? lst '())
+	    	'()
+			(if (equal? (car (cdr (car lst))) j)
+            	lst
+            	(if (equal? (cdr lst) '())
+                	'()
+                	(crop_lst (cdr lst) j)
+            	)
+        	)
         )
 )
 
@@ -238,7 +241,12 @@
             (reverse sublst)
             (let ((x (crop_lst lst j)))
                   (cond ((equal? x '()) '())
-                        ((equal? j 1) (get_sublst x (+ j 1) (cons (car (car x)) sublst) last_j))
+                        ((equal? j 1) (let ((y (get_sublst (cdr x) (+ j 1) (cons (car (car x)) sublst) last_j)))
+                                            (cond ((equal? y '()) (get_sublst (cdr x) j sublst last_j))
+                                                  (else y
+                                                  )
+                                            )
+                                      ))
                         (else
                             (cond ((< (car (car x)) (car sublst)) (get_sublst (cdr x) j sublst last_j))
                                   (else
@@ -251,7 +259,7 @@
                                   )
                             )
                         )
-                  )
-             )
+                 )
+            )
          )
 )
