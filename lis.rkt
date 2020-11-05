@@ -219,7 +219,10 @@
    )
   )
 
-
+;; Contract: max_j : ((number number), ...) -> number
+;; Purpose: to compute the length of greatest non-descending subsequence of the input list
+;; Example: (max_j `((1 1) (2 2) (3 3) (4 4) (1 2))) should produce 4
+;; Definition:
 (define (max_j seq)
         (if (equal? (cdr seq) '())
             (car (cdr (car seq)))
@@ -227,6 +230,10 @@
         )
 )
 
+;; Contract: crop_lst : ((number number), ...) * number -> ((number number), ...)
+;; Purpose: to find the element with given length index and crop the input list to get a new list starting at the element
+;; Example: (crop_lst `((1 1) (2 2) (3 3) (4 4) (1 2)) 3) should produce ((3 3) (4 4) (1 2))
+;; Definition:
 (define (crop_lst lst j)
 	    (if (equal? lst '())
 	    	'()
@@ -240,22 +247,34 @@
         )
 )
 
+;; Contract: get_sublst : ((number number), ...) * number * (number number, ...) * number -> (number number, ...)
+;; Purpose: to extract the greatest non-descending subsequence from the given length-indexed list
+;; Example: (get_sublst `((1 1) (2 2) (3 3) (4 4) (1 2)) 1 '() 4) should produce (1 2 3 4)
+;; Definition:
 (define (get_sublst lst j sublst last_j)
+        ; if length of sublst = last_j, then greatest non-descending subsequence is succefully extracted
         (if (equal? (length sublst) last_j)
             (reverse sublst)
+            ; use crop_lst to find the next element with index j
             (let ((x (crop_lst lst j)))
+                  ; if j-indexed element is not found, return null as false alert
                   (cond ((equal? x '()) '())
+                        ; if j=1, we're processing the first element, then do not check non-descending
                         ((equal? j 1) (let ((y (get_sublst (cdr x) (+ j 1) (cons (car (car x)) sublst) last_j)))
                                             (cond ((equal? y '()) (get_sublst (cdr x) j sublst last_j))
                                                   (else y
                                                   )
                                             )
                                       ))
+                        ; if j!=1, check if the next element found is greater or equal to the previous element
                         (else
                             (cond ((< (car (car x)) (car sublst)) (get_sublst (cdr x) j sublst last_j))
                                   (else
+                                      ; recursively call the function to find the next element
                                       (let ((y (get_sublst (cdr x) (+ j 1) (cons (car (car x)) sublst) last_j)))
+                                            ; if the next iterations returns null, try finding a new element at the current iteration
                                             (cond ((equal? y '()) (get_sublst (cdr x) j sublst last_j))
+                                                  ; or answers found
                                                   (else y
                                                   )
                                             )
