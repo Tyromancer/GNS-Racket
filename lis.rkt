@@ -1,6 +1,7 @@
-;; lst --> ( (num longest), ... )
-;; curr --> current number in input list
-;; longest --> curr's longest val
+;; Contract: compute_longest : ((number number), ...) * number * number -> number
+;; Purpose: to compute the length of the longest non-desc sublist that ends at curr
+;; Example: (compute_longest `(1 2 3 4) 4 1) should produce 4
+;; Definition:
 (define (compute_longest lst curr longest )
 	(if (null? lst)
 		; if lst is null, return input longest value
@@ -28,6 +29,10 @@
 	)
 )
 
+;; Contract: shape : (numbers) -> ( (number), (number), ... )
+;; Purpose: Make each number in lst a separate list that contains the number
+;; Example: (shape `(1 2 3)) should produce ( (1) (2) (3) )
+;; Definition:
 (define (shape lst)
 	(if (= (length lst) 1)
 		(list lst)
@@ -37,7 +42,10 @@
 
 
 
-
+;; Contract: generate_sublists : (numbers) * number -> ((numbers), ...)
+;; Purpose: to compute all possible sublists of lst with a specific length len
+;; Example: (generate_sublists `(3 2 1) 2) should produce ( (3 2) (3 1) (2 1) )
+;; Definition:
 (define (generate_sublists lst len)
 	(cond
 
@@ -90,10 +98,10 @@
 	)
 )
 
-;; Contract: is_non_desc : list_of_numbers number -> boolean
-;; Purpose: check if the list is non-descending, given the previous element
+;; Contract: is_non_desc : (numbers) * number -> boolean
+;; Purpose: check if the list lst is non-descending, given the previous element curr
 ;; Example: (is_non_desc `(2 3 1) 1) should produce #f
-;; Definition
+;; Definition:
 (define (is_non_desc lst curr)
 	(cond
 		( (null? lst)
@@ -113,10 +121,10 @@
 	)
 )
 
-;; Contract: is_non_desc_driver : list_of_numbers -> boolean
+;; Contract: is_non_desc_driver : (numbers) -> boolean
 ;; Purpose: driver function for is_non_desc
 ;; Example: (is_non_desc `(1 2 3 1)) should produce #f
-;; Definition
+;; Definition:
 (define (is_non_desc_driver lst)
 	(if (= (length lst) 1)
 		#t
@@ -129,6 +137,10 @@
 )
 
 ;; lst --> list of sublists
+;; Contract: get_first_non_desc : ((numbers), ...) -> (numbers)
+;; Purpose: Find the first non-descending list in a list of lists
+;; Example: (get_first_non_desc `( ( 3 2 1 ) ( 2 2 1) ( 1 2 3 ) ) ) should produce (1 2 3)
+;; Definition:
 (define (get_first_non_desc lst)
 	(if (null? lst)
 		`()
@@ -142,7 +154,10 @@
 	)
 )
 
-
+;; Contract: ((numbers), ...) * number -> (numbers)
+;; Purpose: to compute the greatest non-desc sublist of lst with length len
+;; Example: (slow `(1 2 3 4 1) 4) should produce (1 2 3 4)
+;; Definition:
 (define (slow lst len)
 	(if (<= (length lst) 0)
 		`()
@@ -155,24 +170,13 @@
 				first_lst
 			)
 		)
-		; (append
-		; 	(generate_sublists
-		; 		lst
-		; 		len
-		; 	)
-
-		; 	(slow
-		; 		lst
-		; 		(- len 1)
-		; 	)
-		; )
 	)
 )
 
 ;; Contract: lis_slow : list_of_numbers -> list_of_numbers
-;; Purpose: to compute the greates non-descending subsequence of the input list in O(2^n) time
+;; Purpose: to compute the greatest non-descending subsequence of the input list in O(2^n) time
 ;; Example: (lis_slow `(1 2 3 4 1)) should produce (1 2 3 4)
-;; Definition
+;; Definition:
 (define (lis_slow lst)
 	(slow lst (length lst))
 )
@@ -180,7 +184,7 @@
 ;; Contract: lis_fast : list_of_numbers -> list_of_numbers
 ;; Purpose: to compute the greates non-descending subsequence of the input list in polynomial time
 ;; Example: (lis_fast `(1 2 3 4 1)) should produce (1 2 3 4)
-;; Definition
+;; Definition:
 (define (lis_fast lst)
 	(if (null? lst)
 		`()
