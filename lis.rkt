@@ -199,6 +199,10 @@
 	)
 )
 
+;; Contract: compute_group : (number number, ...) -> ((number number), ...)
+;; Purpose: to compute a length-indexed list based on non-descending rule given a list of numbers
+;; Example: (compute_group (1 2 3 4 1)) should produce ((1 1) (2 2) (3 3) (4 4) (1 2))
+;; Definition:
 (define (compute_group group L)
   (if (= (length L) 1)
    (list (list
