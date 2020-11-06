@@ -136,7 +136,6 @@
 	)
 )
 
-;; lst --> list of sublists
 ;; Contract: get_first_non_desc : ((numbers), ...) -> (numbers)
 ;; Purpose: Find the first non-descending list in a list of lists
 ;; Example: (get_first_non_desc `( ( 3 2 1 ) ( 2 2 1) ( 1 2 3 ) ) ) should produce (1 2 3)
